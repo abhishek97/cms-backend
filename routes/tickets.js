@@ -15,8 +15,22 @@ router.get('/',(req,res)=>{
     });
 })
 
+router.get('/:id', (req,res)=>{
+    Ticket.findOne({
+        where : { 'id' : req.params.id },
+        include : [{model : Customer,as : 'customer'}]
+    }).then(result=>{
+        result = JSON.parse(JSON.stringify(result));
+        res.json(serializer.serialize('ticket',result));
+    }).catch(err=>{
+        console.error(err);
+        res.sendStatus(500);
+    });
+})
+
 router.post('/',(req,res)=>{
     const ticket = serializer.deserialize('ticket', req.body ) ;
+    ticket.cid = ticket.customer;
     Ticket.create(ticket).then(savedTicket=>{
         savedTicket = JSON.parse(JSON.stringify(savedTicket));
         res.json(serializer.serialize('ticket',savedTicket));

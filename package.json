@@ -15,6 +15,7 @@
     "json-api-serializer": "^1.6.0",
     "mysql": "^2.13.0",
     "mysql2": "^1.2.0",
-    "sequelize": "^3.30.4"
+    "sequelize": "^3.30.4",
+    "uuid": "^3.0.1"
   }
 }

@@ -3,6 +3,11 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const Ticket = require('./models/ticket');
+const User = require('./models/user');
+
+const uuidV4 = require('uuid/v4');
+const authTokens = [];
+
 const Customer = require('./models/customer');
 const CustomerRouter = require('./routes/customers');
 const TicketRouter = require('./routes/tickets');
@@ -22,6 +27,30 @@ app.get('/', (req,res)=>{
 
 app.use('/customers', CustomerRouter);
 app.use('/tickets', TicketRouter);
+
+app.post('/login', (req,res)=>{
+   const user = req.body;
+    User.findOne({
+        where : {
+            $and : [ {username : user.username} , {password : user.password } ]
+        }
+    }).then(result=>{
+        if(!result)
+        {
+            res.status(200).send('Invalid Username/Password');
+            return result;
+        }
+        const apiKey =  uuidV4();
+        authTokens.push(apiKey);
+        res.json({
+            username : user.username,
+            apiKey : apiKey
+        })
+    }).catch(err=>{
+        console.error(err);
+        res.sendStatus(500);
+    })
+});
 
 app.listen('8081', function(){
     console.log('Listening of 8081');

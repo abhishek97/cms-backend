@@ -26,7 +26,7 @@ router.get('/:id', (req,res)=>{
         console.error(err);
         res.sendStatus(500);
     });
-})
+});
 
 router.post('/',(req,res)=>{
     const ticket = serializer.deserialize('ticket', req.body ) ;
@@ -38,6 +38,22 @@ router.post('/',(req,res)=>{
         console.error(err);
         res.sendStatus(500);
     });
+});
+
+router.patch('/:id', (req,res)=>{
+    const ticket = serializer.deserialize('ticket',req.body);
+    delete ticket.time;
+    Ticket.update(ticket,{
+        where : {
+            id : ticket.id
+        }
+    }).then(savedTicket=>{
+        res.sendStatus(204);
+    }).catch(err=>{
+        "use strict";
+        console.error(err);
+        res.sendStatus(500);
+    })
 })
 
 module.exports = router;

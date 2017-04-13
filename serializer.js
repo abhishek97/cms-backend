@@ -10,10 +10,35 @@ Serializer.register('ticket', {
     relationships : {
         customer : {
             type : 'customer'
+        },
+        fb : {
+            type : 'fb'
         }
     }
 });
 
+Serializer.register('ticketq', {
+    id : 'id',
+    unconvertCase : 'camelCase',
+    convertCase : 'kebab-case',
+    relationships : {
+        customer : {
+            type : 'customer'
+        }
+    }
+});
+
+
+Serializer.register('fb', {
+    id : 'id',
+    unconvertCase : 'camelCase',
+    convertCase : 'kebab-case',
+    relationships : {
+        ticket : {
+            type : 'ticket'
+        }
+    }
+})
 
 Serializer.register('customer', {
     id : 'CID',

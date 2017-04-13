@@ -11,10 +11,12 @@ const authTokens = [];
 const Customer = require('./models/customer');
 const CustomerRouter = require('./routes/customers');
 const TicketRouter = require('./routes/tickets');
+const FieldBoyRouter = require('./routes/field-boys');
 
 app.use(cors());
 
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json({type : 'application/json'}) );
 app.use(bodyParser.json({type : 'application/vnd.api+json'}) );
 app.get('/', (req,res)=>{
     Customer.findAll({ include : [{model : Ticket}] }).then(result=>{
@@ -27,6 +29,7 @@ app.get('/', (req,res)=>{
 
 app.use('/customers', CustomerRouter);
 app.use('/tickets', TicketRouter);
+app.use('/fbs', FieldBoyRouter);
 
 app.post('/login', (req,res)=>{
    const user = req.body;

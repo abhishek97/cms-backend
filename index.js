@@ -12,6 +12,7 @@ const Customer = require('./models/customer');
 const CustomerRouter = require('./routes/customers');
 const TicketRouter = require('./routes/tickets');
 const FieldBoyRouter = require('./routes/field-boys');
+const fbApiRouter = require('./routes/fbApi');
 
 app.use(cors());
 
@@ -30,6 +31,8 @@ app.get('/', (req,res)=>{
 app.use('/customers', CustomerRouter);
 app.use('/tickets', TicketRouter);
 app.use('/fbs', FieldBoyRouter);
+
+app.use('/fbApi', fbApiRouter );
 
 app.post('/login', (req,res)=>{
    const user = req.body;

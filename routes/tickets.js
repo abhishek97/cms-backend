@@ -6,15 +6,26 @@ const Ticket = require('../models/ticket');
 const Customer = require('../models/customer');
 const FieldBoy = require('../models/fieldBoy');
 
+const moment = require('moment');
+
 router.get('/',(req,res)=>{
-    Ticket.findAll({include : [{model : FieldBoy , as : 'fb'} ,{model : Customer, as : 'customer'}] } ).then(result=>{
+   // console.log(req.query , req.params);
+    Ticket.findAll({
+        where : {
+            $or : [
+                    { time : { $gte : req.query.filter.after } },
+                    { status : { $ne : 2 } }
+                ]
+        },
+        include : [{model : FieldBoy , as : 'fb'} ,{model : Customer, as : 'customer'}]
+    }).then(result=>{
         result = JSON.parse(JSON.stringify(result));
         res.json(serializer.serialize('ticket',result));
     }).catch(err=>{
         console.error(err);
         res.sendStatus(500);
     });
-})
+});
 
 router.get('/:id', (req,res)=>{
     Ticket.findOne({

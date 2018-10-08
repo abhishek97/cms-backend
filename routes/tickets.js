@@ -111,7 +111,7 @@ router.patch('/:id', async (req,res)=>{
       sendSmsToFieldBoy = sms.sendToFieldBoy(dbTicket.fb.mobile, {
         ticket: dbTicket,
         customer: dbTicket.customer,
-        link: `http://localhost:8081/tickets/resolve/${dbTicket.id}/${dbTicket.secret}`
+        link: `http://api.alphanetbroadband.com/tickets/resolve/${dbTicket.id}/${dbTicket.secret}`
       })
     }
 

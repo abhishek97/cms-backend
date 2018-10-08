@@ -6,7 +6,9 @@ const serializer = require('../serializer');
 const Customer = require('../models/customer');
 
 router.get('/', (req,res)=>{
-    console.log(req.query);
+  if (req.query.filter.CID.length < 2) {
+    return res.send(serializer.serialize('customer', [] ));
+  }
     Customer.findAll({
         where : {
             CID : {

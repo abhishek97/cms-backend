@@ -19,7 +19,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json({type : 'application/json'}) );
 app.use(bodyParser.json({type : 'application/vnd.api+json'}) );
-app.get('/', (req,res)=>{
+app.get('/', (req,res) => {
     Customer.findAll({ include : [{model : Ticket}] }).then(result=>{
         res.send(result);
     }).catch(err=>{

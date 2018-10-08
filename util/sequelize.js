@@ -11,7 +11,8 @@ const sequelize = new Sequelize(process.env.DB_NAME || 'alphanet', config.userna
     },
     define: {
         timestamps: false
-    }
+    },
+    logging: false
 });
 
 module.exports = sequelize;

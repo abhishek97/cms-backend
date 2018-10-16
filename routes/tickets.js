@@ -15,10 +15,7 @@ router.get('/',(req,res)=>{
    // console.log(req.query , req.params);
     Ticket.findAll({
         where : {
-            $or : [
-                    { time : { $gte : req.query.filter.after } },
-                    { status : { $ne : 3 } }
-                ]
+          status : { $ne : 3 }
         },
         include : [{model : FieldBoy , as : 'fb'} ,{model : Customer, as : 'customer'}]
     }).then(result=>{

@@ -19,7 +19,13 @@ router.get('/',(req,res)=>{
         },
         include : [{model : FieldBoy , as : 'fb'} ,{model : Customer, as : 'customer'}]
     }).then(result=>{
-        result = JSON.parse(JSON.stringify(result));
+        result = result.map(ticket => {
+          ticket = ticket.get({plain: true})
+          if (!ticket.fb) {
+            ticket.fb = {}
+          }
+          return ticket
+        })
         res.json(serializer.serialize('ticket',result));
     }).catch(err=>{
         console.error(err);
@@ -35,7 +41,10 @@ router.get('/:id', (req,res)=>{
           as: 'fb'
         }]
     }).then(result=>{
-        result = JSON.parse(JSON.stringify(result));
+        result = result.get({plain: true})
+        if (!result.fb) {
+          result.fb = {}
+        }
         res.json(serializer.serialize('ticket',result));
     }).catch(err=>{
         console.error(err);
@@ -103,8 +112,8 @@ router.patch('/:id', async (req,res)=>{
       })
     }
 
-    // shoot an sms to fieldBoy everytime
-    if (dbTicket.fb.mobile) {
+    // shoot an sms to fieldBoy everytime, except the ticket is being closed
+    if (dbTicket.fb.mobile && ticket.status < 3) {
       sendSmsToFieldBoy = sms.sendToFieldBoy(dbTicket.fb.mobile, {
         ticket: dbTicket,
         customer: dbTicket.customer,

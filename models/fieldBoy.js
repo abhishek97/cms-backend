@@ -11,6 +11,7 @@ const FieldBoy = db.define('fieldBoy', {
     id: {type: Sequelize.BIGINT, primaryKey: true, autoIncrement: true},
     name: Sequelize.STRING,
     pass : Sequelize.STRING,
+    mobile: Sequelize.STRING,
 },{
     freezeTableName: true
 });

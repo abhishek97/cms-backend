@@ -10,8 +10,7 @@ router.get('/', (req,res)=>{
     Customer.findAll({
         where : {
             CID : {
-                $like : '%' + req.query.filter.CID + '%',
-                $notlike : 'Ash%'
+                $like : '%' + req.query.filter.CID + '%'
             }
         }}).then(result=>{
        res.send(serializer.serialize('customer',JSON.parse(JSON.stringify(result))) );

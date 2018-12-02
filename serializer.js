@@ -45,7 +45,7 @@ Serializer.register('customer', {
     unconvertCase : 'camelCase',
     convertCase : 'kebab-case',
     relationships : {
-        ticket : {
+        tickets : {
             type : 'ticket'
         }
     }

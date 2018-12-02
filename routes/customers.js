@@ -41,7 +41,6 @@ router.get('/:id', (req, res) => {
       }]
     }
   }).then(result => {
-    console.log(result.get({plain: true}))
     res.send(serializer.serialize('customer', result.get({plain: true})) );
     //res.json(result);
   }).catch(err => {

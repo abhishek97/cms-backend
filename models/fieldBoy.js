@@ -18,5 +18,7 @@ const FieldBoy = db.define('fieldBoy', {
 
 FieldBoy.hasMany(Ticket, {foreignKey : 'fieldBoyId'  , as : 'ticket'});
 Ticket.belongsTo(FieldBoy , {foreignKey : 'fieldBoyId' , as : 'fb'} );
+Ticket.belongsTo(FieldBoy , {foreignKey : 'helperBoyId' , as : 'helper'} );
+
 
 module.exports = FieldBoy;

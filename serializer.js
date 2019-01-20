@@ -13,6 +13,9 @@ Serializer.register('ticket', {
         },
         fb : {
             type : 'fb'
+        },
+        helper: {
+            type: 'fb'
         }
     }
 });

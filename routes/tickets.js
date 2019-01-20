@@ -39,6 +39,9 @@ router.get('/:id', (req,res)=>{
         include : [{model : Customer,as : 'customer'}, {
           model: FieldBoy,
           as: 'fb'
+        }, {
+          model: FieldBoy,
+          as: 'helper'
         }]
     }).then(result=>{
         result = result.get({plain: true})
@@ -77,6 +80,8 @@ router.patch('/:id', async (req,res)=>{
     delete ticket.uuid;
 
     ticket.fieldBoyId = ticket.fb
+    ticket.helperBoyId = ticket.helper
+
     const oldTicket = await Ticket.findById(ticket.id)
     ticket.secret = v4()
     // update ticket info

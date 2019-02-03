@@ -5,7 +5,7 @@ module.exports = {
    */
   apps : [
     {
-      name      : 'cms-backend',
+      name      : 'api.alphanetbroadband.com',
       script    : 'index.js',
       env: {
         DB_USER: 'alphanet',

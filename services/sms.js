@@ -19,7 +19,7 @@ const SMS = function (smsConfig) {
     copyConfig.text = sms
     copyConfig.mobile = receiver
 
-    if (process.env.DEBUG) {
+    if (process.env.NODE_ENV != 'production') {
       return console.log("SMS", copyConfig)
     }
 

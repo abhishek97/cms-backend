@@ -36,17 +36,17 @@ const SMS = function (smsConfig) {
     return template
   }
 
-  this.sendToCustomer = (receiver, data) => {
-    const template = readAndCompile('customer_sms')
+  const sendToTemplate = (templateName) => (receiver, data) => {
+    const template = readAndCompile(templateName)
     const body = template(data)
     return this.send(receiver, body)
   }
 
-  this.sendToFieldBoy = (receiver, data) => {
-    const template = readAndCompile('fieldboy_sms')
-    const body = template(data)
-    return this.send(receiver, body)
-  }
+  this.sendToCustomer = sendToTemplate('customer_sms')
+
+  this.sendToFieldBoy = sendToTemplate('fieldboy_sms')
+
+  this.sendFeedbackSms = sendToTemplate('customer_feedback')
 
   return this
 }

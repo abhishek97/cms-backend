@@ -6,6 +6,7 @@ const serializer = require('../serializer');
 const Ticket = require('../models/ticket');
 const Customer = require('../models/customer');
 const FieldBoy = require('../models/fieldBoy');
+const config = require('../config')
 
 const sms = require('../services/sms')
 
@@ -108,6 +109,7 @@ router.patch('/:id', async (req,res)=>{
 
     let sendSmsToCustomer = Promise.resolve()
     let sendSmsToFieldBoy = Promise.resolve()
+    let sendFeedbackSms = Promise.resolve()
 
     if (oldTicket.status == 0) {
       // not already assigned; shoot an sms to customer
@@ -126,9 +128,20 @@ router.patch('/:id', async (req,res)=>{
       })
     }
 
+    // shoot an sms to customer for feedback
+    if (ticket.status == 3) {
+      sendFeedbackSms = sms.sendFeedbackSms(dbTicket.customer.Mobile, {
+        ticket: dbTicket,
+        customer: dbTicket.customer,
+        link: `${config.frontend}/feedback/${dbTicket.id}`,
+        secret: dbTicket.customer_secret
+      })
+    }
+
     await Promise.all([
       sendSmsToFieldBoy,
-      sendSmsToCustomer
+      sendSmsToCustomer,
+      sendFeedbackSms
     ])
 
     res.sendStatus(204)

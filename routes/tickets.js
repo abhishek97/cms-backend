@@ -55,21 +55,21 @@ router.get('/:id', (req,res)=>{
     });
 });
 
-router.post('/',(req,res)=>{
-    // console.log(req.body);
-    const ticket = serializer.deserialize('ticket', req.body  ) ;
+router.post('/', (req, res) => {
+  // console.log(req.body);
+  const ticket = serializer.deserialize('ticket', req.body);
 
-    ticket.cid = ticket.customer;
-    ticket.uuid = v4()
-    // ticket.fieldBoyId = ticket.fieldBoyId || 0 ;
+  ticket.cid = ticket.customer;
+  ticket.customer_secret = v4()
+  // ticket.fieldBoyId = ticket.fieldBoyId || 0 ;
 
-    Ticket.create(ticket).then(savedTicket=>{
-        savedTicket = JSON.parse(JSON.stringify(savedTicket));
-        res.json(serializer.serialize('ticket',savedTicket));
-    }).catch(err=>{
-        console.error(err);
-        res.sendStatus(500);
-    });
+  Ticket.create(ticket).then(savedTicket => {
+    savedTicket = JSON.parse(JSON.stringify(savedTicket));
+    res.json(serializer.serialize('ticket', savedTicket));
+  }).catch(err => {
+    console.error(err);
+    res.sendStatus(500);
+  });
 });
 
 router.patch('/:id', async (req,res)=>{

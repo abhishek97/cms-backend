@@ -18,6 +18,11 @@ const SMS = function (smsConfig) {
     const copyConfig = { ...config }
     copyConfig.text = sms
     copyConfig.mobile = receiver
+
+    if (process.env.DEBUG) {
+      return console.log("SMS", copyConfig)
+    }
+
     return axios.get(uri, {
       params: copyConfig,
       json: true

@@ -20,7 +20,7 @@ module.exports = {
       env_production : {
         NODE_ENV: 'production',
         SMS_LOGINID: 'mohitdel94',
-        SMS_PASS: 'kirk@metalx',
+        SMS_PASS: 'kirk@metal',
         DB_NAME: 'alphanet',
         FRONTEND: 'https://cms.alphanetbroadband.com'
       }

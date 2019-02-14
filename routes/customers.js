@@ -6,6 +6,10 @@ const serializer = require('../serializer');
 const Customer = require('../models/customer');
 const Ticket = require('../models/ticket')
 const FB = require('../models/fieldBoy')
+const { middleware } = require('../util/auth')
+
+//auth
+router.use(middleware)
 
 router.get('/', (req,res)=>{
 

@@ -11,6 +11,31 @@ const config = require('../config')
 const sms = require('../services/sms')
 
 const moment = require('moment');
+const { middleware } = require('../util/auth')
+
+
+router.get('/resolve/:id/:secret', async (req, res) => {
+  // tro to find such a ticket
+  const ticket = await Ticket.findOne({
+    where: {
+      id: req.params.id,
+      secret: req.params.secret,
+      status: 0
+    }
+  }).catch(console.error)
+
+  if (!ticket) {
+    return res.send('<h1>Ticket is already resolved OR has been re-assigned OR Incorrect Link')
+  }
+
+  ticket.set("status", 2) // mark as resolved
+  ticket.set("agent_resolve_time", moment(new Date()).format("YYYY-MM-DD HH:mm:ss"))
+  await ticket.save()
+
+  res.send('<h1>Great Work!, Ticket has been resolved')
+})
+
+router.use(middleware)
 
 router.get('/',(req,res)=>{
    // console.log(req.query , req.params);
@@ -151,25 +176,6 @@ router.patch('/:id', async (req,res)=>{
     
 })
 
-router.get('/resolve/:id/:secret', async (req, res) => {
-  // tro to find such a ticket
-  const ticket = await Ticket.findOne({
-    where: {
-      id: req.params.id,
-      secret: req.params.secret,
-      status: 0
-    }
-  }).catch(console.error)
 
-  if (!ticket) {
-    return res.send('<h1>Ticket is already resolved OR has been re-assigned OR Incorrect Link')
-  }
-
-  ticket.set("status", 2) // mark as resolved
-  ticket.set("agent_resolve_time", moment(new Date()).format("YYYY-MM-DD HH:mm:ss"))
-  await ticket.save()
-
-  res.send('<h1>Great Work!, Ticket has been resolved')
-})
 
 module.exports = router;

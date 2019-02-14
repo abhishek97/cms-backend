@@ -6,7 +6,7 @@ const Ticket = require('./models/ticket');
 const User = require('./models/user');
 
 const uuidV4 = require('uuid/v4');
-const authTokens = [];
+const { authTokens, middleware } = require('./util/auth')
 
 const Customer = require('./models/customer');
 const CustomerRouter = require('./routes/customers');
@@ -47,13 +47,6 @@ app.post('/login', (req,res)=>{
        res.sendStatus(500);
    })
 });
-
-// auth
-app.use((req, res, next) => {
-  const apiKey = req.get('apiKey')
-  if (!apiKey || !authTokens.includes(apiKey)) return res.sendStatus(401)
-  else return next()
-})
 
 app.use('/customers', CustomerRouter);
 app.use('/tickets', TicketRouter);

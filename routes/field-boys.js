@@ -10,6 +10,9 @@ const router = express.Router();
 const serializer = require('../serializer');
 const FieldBoy = require('../models/fieldBoy');
 const Ticket = require('../models/ticket');
+const { middleware } = require('../util/auth')
+
+router.use(middleware)
 
 router.get('/', (req,res)=>{
     console.log(req.query);

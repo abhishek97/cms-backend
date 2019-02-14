@@ -24,35 +24,44 @@ app.get('/', (req,res) => {
     res.sendStatus(200)
 });
 
+app.post('/login', (req,res)=>{
+  const user = req.body;
+   User.findOne({
+       where : {
+           $and : [ {username : user.username} , {password : user.password } ]
+       }
+   }).then(result=>{
+       if(!result)
+       {
+           res.status(200).send('Invalid Username/Password');
+           return result;
+       }
+       const apiKey =  uuidV4();
+       authTokens.push(apiKey);
+       res.json({
+           username : user.username,
+           apiKey : apiKey
+       })
+   }).catch(err=>{
+       console.error(err);
+       res.sendStatus(500);
+   })
+});
+
+// auth
+app.use((req, res, next) => {
+  const apiKey = req.get('apiKey')
+  if (!apiKey || !authTokens.includes(apiKey)) return res.sendStatus(401)
+  else return next()
+})
+
 app.use('/customers', CustomerRouter);
 app.use('/tickets', TicketRouter);
 app.use('/fbs', FieldBoyRouter);
 app.use('/fbApi', fbApiRouter );
 app.use('/feedbacks', FeedbackRouter)
 
-app.post('/login', (req,res)=>{
-   const user = req.body;
-    User.findOne({
-        where : {
-            $and : [ {username : user.username} , {password : user.password } ]
-        }
-    }).then(result=>{
-        if(!result)
-        {
-            res.status(200).send('Invalid Username/Password');
-            return result;
-        }
-        const apiKey =  uuidV4();
-        authTokens.push(apiKey);
-        res.json({
-            username : user.username,
-            apiKey : apiKey
-        })
-    }).catch(err=>{
-        console.error(err);
-        res.sendStatus(500);
-    })
-});
+
 
 app.listen('8081', function(){
     console.log('Listening of 8081');

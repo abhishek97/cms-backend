@@ -6,7 +6,9 @@ const Ticket = require('./models/ticket');
 const User = require('./models/user');
 
 const uuidV4 = require('uuid/v4');
-const { authTokens, middleware } = require('./util/auth')
+
+global.authTokens = []
+let authTokens = global.authTokens
 
 const Customer = require('./models/customer');
 const CustomerRouter = require('./routes/customers');

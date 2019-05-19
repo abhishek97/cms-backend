@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const Ticket = require('./models/ticket');
 const User = require('./models/user');
+const morgan = require('morgan')
 
 const uuidV4 = require('uuid/v4');
 
@@ -22,6 +23,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json({type : 'application/json'}) );
 app.use(bodyParser.json({type : 'application/vnd.api+json'}) );
+
+app.use(morgan('tiny'))
 app.get('/', (req,res) => {
     res.sendStatus(200)
 });

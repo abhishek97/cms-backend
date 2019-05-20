@@ -16,9 +16,7 @@ router.use(middleware)
 
 router.get('/', (req,res)=>{
     console.log(req.query);
-    FieldBoy.findAll({
-        include : [{model : Ticket , as : 'ticket'}]
-    }).then(result=>{
+    FieldBoy.findAll().then(result=>{
         res.json(serializer.serialize('fb' , JSON.parse(JSON.stringify(result)) ));
     }).catch(err=>{
         console.error(err);

@@ -11,6 +11,19 @@ const Ticket = require('../models/ticket')
 const policy = (req, res, next) =>  req.query.secret === config.exotel.secret ? next() : res.sendStatus(401)
 
 
+const callForSid = async sid => {
+  const call = await Calls.findById(sid, {
+    include: {
+      model: Customer,
+      as: 'customer'
+    }
+  })
+
+  call.payload = JSON.parse(call.json)
+
+  return call
+}
+
 router.get('/number', policy, async (req, res) => {
   const { digits, From, CallSid } = req.query
 
@@ -31,6 +44,24 @@ router.get('/number', policy, async (req, res) => {
   })
 
   return res.sendStatus(200)
+})
+
+
+router.get('/checkForExistingTicket', policy, async (req, res) => {
+  const { CallSid } = req.query
+  const call = await callForSid(CallSid)
+
+  const pendingTicket = await Ticket.findOne({
+    where: {
+      CID: call.customer.CID,
+      status: {
+        $ne: 3
+      }
+    }
+  })
+
+  const status = pendingTicket ? 404 : 200
+  res.sendStatus(status)
 })
 
 

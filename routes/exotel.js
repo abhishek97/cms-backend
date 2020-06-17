@@ -12,6 +12,8 @@ const policy = (req, res, next) =>  req.query.secret === config.exotel.secret ? 
 
 
 const callForSid = async sid => {
+  if (!sid) 
+    return null
   const call = await Calls.findById(sid, {
     include: {
       model: Customer,
@@ -50,6 +52,9 @@ router.get('/number', policy, async (req, res) => {
 router.get('/checkForExistingTicket', policy, async (req, res) => {
   const { CallSid } = req.query
   const call = await callForSid(CallSid)
+
+  if (!call)
+    return res.sendStatus(500)
 
   const pendingTicket = await Ticket.findOne({
     where: {

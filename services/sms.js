@@ -3,6 +3,7 @@ const hb = require('handlebars')
 const fs = require('fs')
 
 const config = require('../config')
+const {dltForTemplate} = require('../util/sms')
 
 const SMS = function (smsConfig) {
   const config = {
@@ -14,10 +15,11 @@ const SMS = function (smsConfig) {
   }
   const uri = smsConfig.uri
 
-  this.send = (receiver, sms) => {
+  this.send = (receiver, sms, dlt_template_id) => {
     const copyConfig = { ...config }
     copyConfig.text = sms
     copyConfig.mobile = receiver
+    copyConfig.Template_id = dlt_template_id
 
     if (process.env.NODE_ENV != 'production') {
       return console.log("SMS", copyConfig)
@@ -39,7 +41,7 @@ const SMS = function (smsConfig) {
   const sendToTemplate = (templateName) => (receiver, data) => {
     const template = readAndCompile(templateName)
     const body = template(data)
-    return this.send(receiver, body)
+    return this.send(receiver, body, dltForTemplate(templateName))
   }
 
   this.sendToCustomer = sendToTemplate('customer_sms')

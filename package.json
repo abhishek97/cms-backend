@@ -12,7 +12,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.17.1",
     "cors": "^2.8.3",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "handlebars": "^4.0.11",
     "json-api-serializer": "^1.6.0",
     "morgan": "^1.9.1",
